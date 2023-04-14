@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 
 include(pico_sdk_import.cmake)
 
-project(myproject)
+project(seven_segment)
 
 pico_sdk_init()
 
@@ -14,20 +14,20 @@ add_compile_options(
 	-Wextra    			# optional
 )
 
-add_executable(myproject)
+add_executable(seven_segment)
 
-target_sources(myproject PRIVATE myproject.c)
+target_sources(seven_segment PRIVATE seven_segment.c)
 
-add_subdirectory(myproject_library)
+add_subdirectory(seven_segment_library)
 
-target_link_libraries(myproject PRIVATE
+target_link_libraries(seven_segment PRIVATE
 	pico_stdlib
 	hardware_pio
-	myproject_library)
+	seven_segment_library)
 
-pico_add_extra_outputs(myproject)
+pico_add_extra_outputs(seven_segment)
 
-# pico_enable_stdio_usb(myproject 1)
-pico_enable_stdio_uart(myproject 1)
+# pico_enable_stdio_usb(seven_segment 1)
+pico_enable_stdio_uart(seven_segment 1)
 
-# example_auto_set_url(myproject)
+# example_auto_set_url(seven_segment)
