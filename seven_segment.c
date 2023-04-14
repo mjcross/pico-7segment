@@ -4,19 +4,17 @@
 
 
 const PIO pio = pio0;
-const uint gpio = PICO_DEFAULT_LED_PIN;
+const uint segment_pinbase = 8;         // shared segments gpio 8..15
+const uint digit_pinbase = 16;          // digit mux gpio 16..19
 
 int main() {
     stdio_init_all();
 
     uint sm;
-    if (seven_segment_init (pio, &sm, gpio)) {
+    if (seven_segment_init (pio, &sm, segment_pinbase, digit_pinbase)) {
         puts ("running");
         while(true) {
-            pio_sm_put (pio, sm, 1);    // turn led on
-            sleep_ms (500);
-            pio_sm_put (pio, sm, 0);    // turn led off
-            sleep_ms (500);
+            // todo: write simple usage example
         }
     }
 
