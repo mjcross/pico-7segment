@@ -20,9 +20,17 @@ bool seven_segment_init (PIO pio, uint *p_sm,
         *p_sm = (uint)sm;
     }
 
-    // set the gpio pin function to PIO output
-    pio_gpio_init (pio, gpio);
-    pio_sm_set_consecutive_pindirs (pio, *p_sm, gpio, 1, true);
+    // set segment pins to PIO output
+    for (int pin = 0; pin < 8; pin += 1) {
+        pio_gpio_init (pio, segment_pinbase + pin);
+    }
+    pio_sm_set_consecutive_pindirs (pio, *p_sm, segment_pinbase, 8, true);
+
+    // set digit mux pins to PIO output
+    for (int pin = 0; pin < 4; pin += 1) {
+        pio_gpio_init (pio, digit_pinbase + pin);
+    }
+    pio_sm_set_consecutive_pindirs (pio, *p_sm, digit_pinbase, 4, true);
 
     // initialise X register to zero
     pio_sm_exec_wait_blocking (pio, *p_sm, pio_encode_mov (pio_x, pio_null));
