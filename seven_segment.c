@@ -4,8 +4,8 @@
 
 
 const PIO pio = pio0;
-const uint segment_pinbase = 8;         // shared segments gpio 8..15
-const uint digit_pinbase = 16;          // digit mux gpio 16..19
+const uint segment_pinbase = 8;         // gpio 8-15: shared segments 
+const uint digit_pinbase = 16;          // gpio 16-19: digit mux lines
 
 int main() {
     stdio_init_all();
@@ -13,8 +13,9 @@ int main() {
     uint sm;
     if (seven_segment_init (pio, &sm, segment_pinbase, digit_pinbase)) {
         puts ("running");
-        while(true) {
-            // todo: write simple usage example
+        for (int i = 0; i < 1000; i += 1) {
+            sleep_ms (100);
+            pio_sm_put (pio, sm, num_to_seven_segment (i));
         }
     }
 

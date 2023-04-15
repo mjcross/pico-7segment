@@ -2,6 +2,34 @@
 #include "hardware/gpio.h"
 #include "seven_segment_library.h"
 
+static const uint8_t segments[] = {
+    //ABCDEFG.
+    0b11111100,     // 0
+    0b01100000,     // 1
+    0b10011010,     // 2
+    0b11110010,     // 3
+    0b01100110,     // 4
+    0b10110010,     // 5
+    0b10111110,     // 6
+    0b11100000,     // 7
+    0b11111110,     // 8
+    0b11110110      // 9
+};
+
+uint32_t num_to_seven_segment (int num) {
+    uint32_t word = 0;
+
+    if (num == 0) {
+        return segments[0];
+    }
+    for (int bitshift = 0; bitshift < 32 && num > 0; bitshift += 8) {
+        word |= segments[num % 10] << bitshift;
+        num /= 10;
+    }
+    return word;
+}
+
+
 bool seven_segment_init (PIO pio, uint *p_sm, 
                          uint segment_pinbase, uint digit_pinbase) {
     // add the program to the PIO shared instruction memory
