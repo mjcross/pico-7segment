@@ -16,7 +16,7 @@ static const uint8_t segments[] = {
     0b11110110      // 9
 };
 
-uint32_t num_to_seven_segment (int num) {
+uint32_t int_to_seven_segment (int num) {
     uint32_t word = 0;
 
     if (num == 0) {

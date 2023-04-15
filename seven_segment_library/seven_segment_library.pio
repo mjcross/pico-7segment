@@ -2,13 +2,13 @@
 .side_set 4                         ; used for digit muxing (segments are shared)
 
 .wrap_target
-    pull noblock    side 8          ; TX FIFO (or X) -> OSR     show digit 4 for 1T
+    pull noblock    side 8          ; TX FIFO (or X) -> OSR     and show digit 1 for 1T
 public entry_point:
-    mov x, OSR      side 0          ; save display word         blank for 1T
-    out pins, 8     side 1  [1]     ; OSR[0..7] -> digit 1      show digit 1 for 2T
-    out pins, 8     side 2  [1]     ; OSR[8..15] -> digit 2     show digit 2 for 2T
-    out pins, 8     side 4  [1]     ; OSR[16..23] -> digit 3    show digit 3 for 2T
-    out pins, 8     side 8          ; OSR[24..31] -> digit 4    show digit 4 for 1T
+    mov x, OSR      side 0          ; save display word         and blank for 1T
+    out pins, 8     side 1  [1]     ; OSR[0..7] -> digit 1      and show digit 4 for 2T
+    out pins, 8     side 2  [1]     ; OSR[8..15] -> digit 2     and show digit 3 for 2T
+    out pins, 8     side 4  [1]     ; OSR[16..23] -> digit 3    and show digit 2 for 2T
+    out pins, 8     side 8          ; OSR[24..31] -> digit 4    and show digit 1 for 1T
 .wrap
 ;; 6 instructions
 

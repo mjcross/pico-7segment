@@ -15,7 +15,7 @@ int main() {
         puts ("running");
         for (int i = 0; i < 1000; i += 1) {
             sleep_ms (100);
-            pio_sm_put (pio, sm, num_to_seven_segment (i));
+            pio_sm_put (pio, sm, int_to_seven_segment (i));
         }
     }
 
