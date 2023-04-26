@@ -1,14 +1,20 @@
 .program seven_segment
-.side_set 4                         ; used for digit muxing (segments are shared)
+
+;; SIDE pins:   digit common cathodes (pull low to select)
+;; OUT pins:    multiplexed segments (shared between digits)
+
+.side_set 4                             ; common cathode pins (4 digit display)
 
 .wrap_target
-    pull noblock    side 0b0111         ; TX FIFO (or X) -> OSR     and show digit 1 for 1 tick
+    pull noblock    side 0b0111         ; TX FIFO (or X) -> OSR     keep showing 1000's for 1 tick                                        ; note: nonblocking pull on empty FIFO performs `mov osr, x`
+                                        ; if the FIFO is empty this has the effect of `mov osr, x`
 public entry_point:
-    mov x, OSR      side 0b1111         ; save display word         and blank for 1 tick
-    out pins, 8     side 0b1110  [1]    ; OSR[0..7] -> digit 1      and show digit 4 for 2 ticks
-    out pins, 8     side 0b1101  [1]    ; OSR[8..15] -> digit 2     and show digit 3 for 2 ticks
-    out pins, 8     side 0b1011  [1]    ; OSR[16..23] -> digit 3    and show digit 2 for 2 ticks
-    out pins, 8     side 0b0111         ; OSR[24..31] -> digit 4    and show digit 1 for 1 ticks
+    mov x, OSR      side 0b1111         ; save the segment pattern  and show no digits for 1 tick
+                                        
+    out pins, 8     side 0b1110  [1]    ; OSR[00..07] -> segments   and show 1's digit for 2 ticks
+    out pins, 8     side 0b1101  [1]    ; OSR[08..15] -> segments   and show 10's digit for 2 ticks
+    out pins, 8     side 0b1011  [1]    ; OSR[16..23] -> segments   and show 100's digit for 2 ticks
+    out pins, 8     side 0b0111         ; OSR[24..31] -> segments   and show 1000's digit for 1 tick
 .wrap
 ;; 6 instructions
 
@@ -19,7 +25,7 @@ static inline void seven_segment_sm_init (PIO pio, uint sm, uint offset,
     // create new sm config
     pio_sm_config config = seven_segment_program_get_default_config (offset);
 
-    // configure the segment digit pins
+    // configure the common cathodes and segment pin groups
     sm_config_set_out_pins (&config, segment_pinbase, 8);
     sm_config_set_sideset_pins (&config, digit_pinbase);
 

@@ -4,8 +4,8 @@
 
 
 const PIO pio = pio0;
-const uint segment_pinbase = 8;         // gpio 8-15: shared segments 
-const uint digit_pinbase = 16;          // gpio 16-19: digit mux lines
+const uint segment_pinbase = 8;         // gpio 8-15: shared segments (A-G, dp)
+const uint digit_pinbase = 16;          // gpio 16-19: common cathodes (1, 10, 100, 1000)
 
 int main() {
     stdio_init_all();

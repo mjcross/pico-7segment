@@ -3,17 +3,18 @@
 #include "seven_segment_library.h"
 
 static const uint8_t segments[] = {
-    //ABCDEFG.
-    0b11111100,     // 0
-    0b01100000,     // 1
-    0b11011010,     // 2
-    0b11110010,     // 3
+    //.GFEDCBA
+    0b00111111,     // 0
+    0b00000110,     // 1
+    0b01011011,     // 2
+
+    0b01001111,     // 3
     0b01100110,     // 4
-    0b10110110,     // 5
-    0b10111110,     // 6
-    0b11100000,     // 7
-    0b11111110,     // 8
-    0b11110110      // 9
+    0b01101101,     // 5
+    0b01111101,     // 6
+    0b00000111,     // 7
+    0b01111111,     // 8
+    0b01101111      // 9
 };
 
 uint32_t int_to_seven_segment (int num) {
@@ -30,8 +31,7 @@ uint32_t int_to_seven_segment (int num) {
 }
 
 
-bool seven_segment_init (PIO pio, uint *p_sm, 
-                         uint segment_pinbase, uint digit_pinbase) {
+bool seven_segment_init (PIO pio, uint *p_sm, uint segment_pinbase, uint digit_pinbase) {
     // add the program to the PIO shared instruction memory
     if (pio_can_add_program (pio, &seven_segment_program) == false) {
         puts ("could not add the pio program");
