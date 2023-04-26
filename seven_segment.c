@@ -13,7 +13,7 @@ int main() {
     uint sm;
     if (seven_segment_init (pio, &sm, segment_pinbase, digit_pinbase)) {
         puts ("running");
-        for (int i = 0; i < 1000; i += 1) {
+        for (int i = 0; i < 10000; i += 1) {
             sleep_ms (100);
             pio_sm_put (pio, sm, int_to_seven_segment (i));
         }
