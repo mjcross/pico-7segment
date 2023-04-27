@@ -2,12 +2,11 @@
 #include "hardware/gpio.h"
 #include "seven_segment_library.h"
 
-static const uint8_t segments[] = {
-    //.GFEDCBA
+static const uint8_t segments[] = {     // segments to illuminate for each digit
+//    .GFEDCBA
     0b00111111,     // 0
     0b00000110,     // 1
     0b01011011,     // 2
-
     0b01001111,     // 3
     0b01100110,     // 4
     0b01101101,     // 5
@@ -17,6 +16,7 @@ static const uint8_t segments[] = {
     0b01101111      // 9
 };
 
+// convert an integer into a 32-bit word representing up to 4 seven segment digits
 uint32_t int_to_seven_segment (int num) {
     uint32_t word = 0;
 
