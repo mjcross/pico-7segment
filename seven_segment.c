@@ -4,14 +4,14 @@
 
 
 const PIO pio = pio0;
-const uint first_segment_pin = 8;   // gpio 8-15: shared segments (A-G, dp)
-const uint first_digit_pin = 16;    // gpio 16-19: digit cathodes (1, 10, 100, 1000)
+const uint first_segment_pin = 8;   // gpio 15-8 = segments E,D,B,G,A,C,F,dp
+const uint first_digit_pin = 16;    // gpio 19-16 = common anodes 4,3,2,1
 
-//                      .GFEDCBA
-const uint32_t Pico = 0b01110011 << 24 |    // 'P'
-                      0b00010000 << 16 |    // 'i'
-                      0b01011000 <<  8 |    // 'c'
-                      0b01011100;           // 'o'
+//                      EDBGACF.       bit ordering depends on your display and wiring
+const uint32_t Pico = 0b10111010 << 24 |    // 'P'
+                      0b10000000 << 16 |    // 'i'
+                      0b11010000 <<  8 |    // 'c'
+                      0b11010100;           // 'o'
 
 int main() {
     uint sm;
