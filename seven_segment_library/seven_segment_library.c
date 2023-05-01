@@ -2,7 +2,8 @@
 #include "hardware/gpio.h"
 #include "seven_segment_library.h"
 
-static const uint8_t segments[] = {     // segments to illuminate for each digit
+// segment patterns for digits 0-9
+static const uint8_t segments[] = {
 //    EDBGACF.      the bit ordering depends on the display used
     0b11101110,     // 0
     0b00100100,     // 1
@@ -16,21 +17,25 @@ static const uint8_t segments[] = {     // segments to illuminate for each digit
     0b01111110      // 9
 };
 
-// convert an integer into a 32-bit word representing up to 4 seven segment digits
+
+// converts an integer into a 32-bit word representing up to four 7-segment digits
+//
 uint32_t int_to_seven_segment (int num) {
     uint32_t word = 0;
-
     if (num == 0) {
-        return segments[0];
-    }
-    for (int bitshift = 0; bitshift < 32 && num > 0; bitshift += 8) {
-        word |= segments[num % 10] << bitshift;
-        num /= 10;
+        word = segments[0];
+    } else {
+        for (int bitshift = 0; bitshift < 32 && num > 0; bitshift += 8) {
+            word |= segments[num % 10] << bitshift;
+            num /= 10;
+        }
     }
     return word;
 }
 
 
+// configures and initialises a PIO state machine
+//
 bool seven_segment_init (PIO pio, uint *p_sm, uint segment_pinbase, uint digit_pinbase) {
     // add the program to the PIO shared instruction memory
     if (pio_can_add_program (pio, &seven_segment_program) == false) {
@@ -64,8 +69,7 @@ bool seven_segment_init (PIO pio, uint *p_sm, uint segment_pinbase, uint digit_p
     pio_sm_exec_wait_blocking (pio, *p_sm, pio_encode_mov (pio_x, pio_null));
 
     // configure and enable the state machine
-    seven_segment_sm_init (pio, *p_sm, offset, 
-                           segment_pinbase, digit_pinbase);
+    seven_segment_sm_init (pio, *p_sm, offset, segment_pinbase, digit_pinbase);
 
     return true;
 }
